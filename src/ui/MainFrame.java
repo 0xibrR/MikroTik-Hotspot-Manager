@@ -652,16 +652,32 @@ public class MainFrame extends JFrame {
                 }
             }
 
-            File pdf =
-                    new File(
-                            latest,
-                            "all_vouchers.pdf");
+            File[] pdfFiles =
+                    latest.listFiles(
+                            (dir, name) ->
+                                    name.toLowerCase()
+                                            .endsWith(".pdf"));
 
-            Desktop.getDesktop().open(pdf);
+            if (pdfFiles == null ||
+                    pdfFiles.length == 0) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "No PDF Found");
+
+                return;
+            }
+
+            Desktop.getDesktop().open(
+                    pdfFiles[0]);
 
         } catch (Exception ex) {
 
             ex.printStackTrace();
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    ex.getMessage());
         }
     }
 

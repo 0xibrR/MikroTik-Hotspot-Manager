@@ -13,8 +13,10 @@ public class QRCodeGenerator {
             String password) throws Exception {
 
         String content =
-                "Username: " + username +
-                        "\nPassword: " + password;
+                "http://10.10.0.1/login?u="
+                        + username
+                        + "&p="
+                        + password;
 
         BitMatrix matrix =
                 new MultiFormatWriter().encode(
