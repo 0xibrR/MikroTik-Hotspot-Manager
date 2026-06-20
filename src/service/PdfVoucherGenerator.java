@@ -40,10 +40,9 @@ public class PdfVoucherGenerator {
         document.open();
 
         int columns =
-                Math.min(
-                        Math.max(
-                                users.size(),
-                                1),
+                Math.clamp(
+                        users.size(),
+                        1,
                         10);
 
         PdfPTable table =
