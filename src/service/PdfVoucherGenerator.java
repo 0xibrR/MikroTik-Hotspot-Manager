@@ -19,6 +19,11 @@ public class PdfVoucherGenerator {
             String pdfPath)
             throws Exception {
 
+        if (users == null ||
+                users.isEmpty()) {
+            return;
+        }
+
         Document document =
                 new Document(
                         PageSize.A4,
@@ -29,24 +34,37 @@ public class PdfVoucherGenerator {
 
         PdfWriter.getInstance(
                 document,
-                new FileOutputStream(pdfPath));
+                new FileOutputStream(
+                        pdfPath));
 
         document.open();
 
-        PdfPTable table =
-                new PdfPTable(10);
+        int columns =
+                Math.min(
+                        Math.max(
+                                users.size(),
+                                1),
+                        10);
 
-        table.setWidthPercentage(100);
+        PdfPTable table =
+                new PdfPTable(
+                        columns);
+
+        table.setWidthPercentage(
+                100);
 
         for (User user : users) {
 
             PdfPCell cell =
-                    createVoucherCell(user);
+                    createVoucherCell(
+                            user);
 
-            table.addCell(cell);
+            table.addCell(
+                    cell);
         }
 
-        document.add(table);
+        document.add(
+                table);
 
         document.close();
     }
@@ -60,7 +78,8 @@ public class PdfVoucherGenerator {
 
         cell.setPadding(2);
 
-        cell.setFixedHeight(90);
+        cell.setFixedHeight(
+                90);
 
         cell.setHorizontalAlignment(
                 Element.ALIGN_CENTER);
@@ -137,11 +156,20 @@ public class PdfVoucherGenerator {
         qr.setAlignment(
                 Element.ALIGN_CENTER);
 
-        cell.addElement(title);
-        cell.addElement(username);
-        cell.addElement(password);
-        cell.addElement(uptime);
-        cell.addElement(qr);
+        cell.addElement(
+                title);
+
+        cell.addElement(
+                username);
+
+        cell.addElement(
+                password);
+
+        cell.addElement(
+                uptime);
+
+        cell.addElement(
+                qr);
 
         return cell;
     }
