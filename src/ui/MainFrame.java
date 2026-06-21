@@ -6,6 +6,8 @@ import service.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.time.LocalDateTime;
@@ -193,18 +195,7 @@ public class MainFrame extends JFrame {
                         15,
                         15));
 
-        JLabel title =
-                new JLabel(
-                        "MikroTik Hotspot Manager");
-
-        title.setFont(
-                new Font(
-                        "Segoe UI",
-                        Font.BOLD,
-                        24));
-
-        title.setAlignmentX(
-                Component.CENTER_ALIGNMENT);
+        JLabel title = getJLabel();
 
         mainPanel.add(title);
 
@@ -365,6 +356,7 @@ public class MainFrame extends JFrame {
                 BorderLayout.CENTER);
     }
 
+
     private List<User> generateUsers() {
 
         int count =
@@ -423,6 +415,41 @@ public class MainFrame extends JFrame {
                         profile,
                         server,
                         uptime);
+    }
+
+    private JLabel getJLabel() {
+        JLabel title =
+                new JLabel(
+                        "MikroTik Hotspot Manager");
+
+        title.setCursor(
+                new Cursor(
+                        Cursor.HAND_CURSOR));
+
+        title.setToolTipText(
+                "About MikroTik Hotspot Manager");
+
+
+        title.setFont(
+                new Font(
+                        "Segoe UI",
+                        Font.BOLD,
+                        24));
+
+        title.setAlignmentX(
+                Component.CENTER_ALIGNMENT);
+
+        title.addMouseListener(
+                new MouseAdapter() {
+
+                    @Override
+                    public void mouseClicked(
+                            MouseEvent e) {
+
+                        showAboutDialog();
+                    }
+                });
+        return title;
     }
 
     private void exportFiles() {
@@ -988,6 +1015,122 @@ public class MainFrame extends JFrame {
 
             ex.printStackTrace();
         }
+    }
+
+    private void showAboutDialog() {
+
+        JDialog dialog =
+                new JDialog(
+                        this,
+                        "About MikroTik Hotspot Manager",
+                        true);
+
+        dialog.setSize(
+                600,
+                500);
+
+        dialog.setLocationRelativeTo(
+                this);
+
+        dialog.setLayout(
+                new BorderLayout(
+                        10,
+                        10));
+
+        JTextArea area =
+                new JTextArea(
+                        """
+     MikroTik Hotspot Manager
+      Version 1.1
+    
+     Developed by
+      Ibrahim Ramadan
+    
+     Features
+      • User Generation
+      • CSV Export
+      • RSC Export
+      • PDF Voucher Generation
+      • QR Code Generation
+      • QR Auto Login
+      • History Tracking
+      • Settings Persistence
+    
+     Technologies
+      • Java
+      • Swing
+      • iTextPDF
+      • ZXing
+      • Git
+    
+     Copyright © 2026 Ibrahim Ramadan
+     All Rights Reserved
+    """);
+
+        area.setEditable(false);
+
+        area.setLineWrap(true);
+
+        area.setWrapStyleWord(true);
+
+        area.setFont(
+                new Font(
+                        "Segue UI",
+                        Font.PLAIN,
+                        15));
+
+        area.setCaretPosition(0);
+
+        JScrollPane scrollPane =
+                new JScrollPane(area);
+
+        JButton githubButton =
+                new JButton(
+                        "Open GitHub Repository");
+
+        githubButton.addActionListener(
+                e -> {
+
+                    try {
+
+                        Desktop.getDesktop()
+                                .browse(
+                                        new java.net.URI("https://github.com/0xibrR/MikroTik-Hotspot-Manager"));
+
+                    } catch (Exception ex) {
+
+                        ex.printStackTrace();
+                    }
+                });
+
+        JButton closeButton =
+                new JButton(
+                        "Close");
+
+        closeButton.addActionListener(
+                e -> dialog.dispose());
+
+        JPanel buttonPanel =
+                new JPanel(
+                        new FlowLayout(
+                                FlowLayout.RIGHT));
+
+        buttonPanel.add(
+                githubButton);
+
+        buttonPanel.add(
+                closeButton);
+
+        dialog.add(
+                scrollPane,
+                BorderLayout.CENTER);
+
+        dialog.add(
+                buttonPanel,
+                BorderLayout.SOUTH);
+
+        dialog.setVisible(
+                true);
     }
 
 }
